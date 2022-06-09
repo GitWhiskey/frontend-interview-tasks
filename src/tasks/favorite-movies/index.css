@@ -1,0 +1,15 @@
+.movie {
+    width: 500px;
+    display: flex;
+    flex-direction: row;
+    padding: 8px;
+}
+
+.movie-input {
+    width: 300px;
+    margin-right: 8px;
+}
+
+.add-movie-button {
+    margin: 16px;
+}
