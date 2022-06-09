@@ -1,17 +1,41 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import DeviceStatus from './tasks/device-status';
+import { Box, createTheme, CssBaseline, Drawer, List, ThemeProvider, } from "@mui/material";
+import { BrowserRouter, Route, Switch } from "react-router-dom";
+import FavoriteMovies from "./tasks/favorite-movies";
+import ListItemLink from "./components/LinkItemList";
+
+const mdTheme = createTheme();
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+      <BrowserRouter>
+          <ThemeProvider theme={mdTheme}>
+              <Box sx={{ display: 'flex' }}>
+                  <CssBaseline />
+                  <Drawer
+                    variant="permanent">
+                      <List>
+                          <ListItemLink to="/device-status">Device status</ListItemLink>
+                          <ListItemLink to="/favorite-movies">Favorite movies</ListItemLink>
+                      </List>
+                  </Drawer>
+                  <Switch>
+                      <Route path="/device-status">
+                          <DeviceStatus deviceId="test-device-1" />
+                      </Route>
+                      <Route path="/favorite-movies">
+                          <FavoriteMovies />
+                      </Route>
+                      <Route path="/">
+                      </Route>
+                  </Switch>
+              </Box>
+          </ThemeProvider>
+      </BrowserRouter>
   </React.StrictMode>,
   document.getElementById('root')
 );
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();

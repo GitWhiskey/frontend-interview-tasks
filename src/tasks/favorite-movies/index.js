@@ -1,8 +1,6 @@
-import { Box } from "@mui/material";
 import { useState } from "react";
-import { creteFavoriteMovie } from "./movies";
+import { addRandomFavoriteMovie } from "./movies";
 import "./index.css";
-
 
 const DeletableMovieEntry = ({ movie, handleDelete, handleChange }) => {
     const onDelete = () => {
@@ -20,18 +18,24 @@ const DeletableMovieEntry = ({ movie, handleDelete, handleChange }) => {
                 defaultValue={movie.movieName}
                 onChange={onChange}
             />
-            <button onClick={onDelete}>x</button>
+            <button
+                className="delete-movie-button"
+                data-testid="delete-movie-button"
+                onClick={onDelete}>
+                x
+            </button>
         </div>
     );
 }
 
-const FavoriteMovies = () => {
+const FavoriteMovies = ({ favoriteMovies = [], onMoviesChanged }) => {
     // state
-    const [selectedMovies, setSelectedMovies] = useState([]);
+    const [selectedMovies, setSelectedMovies] = useState(favoriteMovies);
 
     // handlers
-    const handleDelete = (movie) => {
-        setSelectedMovies(prevState => prevState.filter((r) => r.id !== movie.id));
+    const addMovie = () => {
+        setSelectedMovies(prevState => [...prevState, addRandomFavoriteMovie()]);
+        onMoviesChanged && onMoviesChanged(selectedMovies);
     };
 
     const handleChange = (id, movieName) => {
@@ -41,21 +45,28 @@ const FavoriteMovies = () => {
             newState.splice(movieIndex, 1, { id, movieName });
             return newState;
         });
+        onMoviesChanged && onMoviesChanged(selectedMovies);
     };
 
-    const addMovie = () => {
-       setSelectedMovies(prevState => [...prevState, creteFavoriteMovie()])
+    const handleDelete = (movie) => {
+        setSelectedMovies(prevState => prevState.filter((r) => r.id !== movie.id));
+        onMoviesChanged && onMoviesChanged(selectedMovies);
     };
 
     // render
     return (
         <div className="container">
             <h1>Add your favorite movies</h1>
-            <button className="add-movie-button" onClick={addMovie}>Add movie</button>
+            <button
+                data-testid="add-movie-button"
+                className="add-movie-button"
+                onClick={addMovie}>
+                Add movie
+            </button>
             <div>
                 { selectedMovies.map((movie) =>
                         <DeletableMovieEntry
-                            key={movie.value}
+                            key={movie.values}
                             movie={movie}
                             handleDelete={handleDelete}
                             handleChange={handleChange}

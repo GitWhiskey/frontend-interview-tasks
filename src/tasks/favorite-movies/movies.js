@@ -1,4 +1,4 @@
-export const creteFavoriteMovie = () => {
+export const addRandomFavoriteMovie = () => {
     const randomMovie = movies[Math.floor(Math.random() * movies.length)];
     return {
         id: Math.random().toString(),
